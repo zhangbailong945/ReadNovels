@@ -21,25 +21,15 @@ class NovelDirectory{
 }
 
 $obj=new NovelDirectory();
-$url="http://www.20xs.cc/dingdian/0_296/";
+$url="http://www.16kxsw.com/16k/11/11312/";
 $directoryHtml=$obj->getDirectory($url);
 
 $directoryText=array();
-$matchRegD="/<div class=\"article_texttitleb\">(.*)<\/li><\/ul>/";
-
-if(preg_match($matchRegD,$directoryHtml,$matches))
-{
-
-   $directoryHtml=$matches[1];
-}
-$directoryHtml=str_replace('<script>yuntujianssa();</script>','',$directoryHtml);
-
-$directoryHtml=$directoryHtml.'</li>';
-
+$matchRegD="/<dd><a href=\"(.*)\" title=\"(.*)\">(.*)<\/a><\/dd>/";
 $directoryList=array();
-
-if(preg_match_all('/<a +href="([^"]*)">(.*)<\/a>/iU',$directoryHtml,$matches))
+if(preg_match_all($matchRegD,$directoryHtml,$matches))
 {
+
 	for($j=0;$j<count($matches[2]);$j++)
 	{
 	   $ahref=$matches[1][$j];
@@ -51,16 +41,10 @@ if(preg_match_all('/<a +href="([^"]*)">(.*)<\/a>/iU',$directoryHtml,$matches))
        unset($list);
 	}
 }
-
+else
+{
+   echo "000";
+}
 //反转数组，最新章节排在最近前面
 $directoryList=array_reverse($directoryList);
-
-
-
-//$directoryText[1310];
-
-header("Content-type:text/html;charset=utf-8");
-//print_r($directoryList);
 echo json_encode($directoryList);
-
-

@@ -3,15 +3,20 @@ class NovelText{
 
 	  public function getText($url)
 	  {
+	  	$headers = array(
+			    'User-Agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9) Gecko/2008052906 Firefox/3.0',
+			    'Referer'    => 'http://www.163.com'
+			);
 
 	      $ch=curl_init();
 	
 	      curl_setopt($ch,CURLOPT_URL,$url);
 	      
 	      curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-
-	      curl_setopt($ch,CURLOPT_HEADER,0);
-	
+          curl_setopt($ch, CURLOPT_TIMEOUT, "60");
+	      //curl_setopt($ch,CURLOPT_HEADER,0);
+	      //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	      curl_setopt($ch,CURLOPT_HTTPHEADER, array('Expect:'));
 	      $output=curl_exec($ch);
 
 	      curl_close($ch);
@@ -19,15 +24,19 @@ class NovelText{
 	  }
 }
 
+/*
 $obj=new NovelText();
-$url="http://www.20xs.cc/dingdian/0_296/n31039.html";
+$url="http://www.16kxsw.com/16k/11/11312/5376991.html";
 $texts=array();
 $directoryHtml=$obj->getText($url);
 print_r($directoryHtml);
-$matchRegD="/<div id=\"god\"><\/div><script>yuntujians();<\/script>(.*)<div id=\"ali\"><\/div><\/div>/i";
-if(preg_match($matchRegD,$directoryHtml,$matches))
+*/
+if(!empty($_POST['link'])&&$_POST['action']=='character')
 {
-
-   $directoryHtml=$matches[1];
+    $obj=new NovelText();
+	$url="http://www.16kxsw.com/16k/11/11312/".$_POST['link']."";
+	$directoryHtml=$obj->getText($url);
+	print_r($directoryHtml);
 }
+
 
